@@ -1,6 +1,8 @@
 'use client'
 
 import { Auth } from "./api/auth";
+import { ContainerItem } from "./components/container-item";
+import { ContentImage } from "./components/content-image";
 
 export default function Home() {
 
@@ -12,9 +14,17 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <h1>Hello World</h1>
+    <>
+
+      <ContainerItem name="The Lord of the Rings Collection">
+        <ContentImage data={{
+          poster_path: '/oENY593nKRVL2PnxXsMtlh8izb4.jpg',
+          name: 'The Lord of the Rings Collection'
+        }}/>
+      </ContainerItem>
+
       <button onClick={handleSubmit}>Submit</button>
-    </div>
+
+    </>
   );
 }
