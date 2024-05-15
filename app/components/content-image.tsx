@@ -16,7 +16,7 @@ const ContentImage = ({ data }: ContentImageProps) => {
       alt={name ?? ''}
       width={240}
       height={310}
-      className='bg-cover'
+      className='bg-cover hover:scale-110 transition duration-500'
     />
   );
 };

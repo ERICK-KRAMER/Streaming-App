@@ -1,6 +1,4 @@
-const url = 'https://api.themoviedb.org/3/movie/';
-
-const token = process.env.TOKEN;
+const token = process.env.TOKEN || 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZmI2NTVjOTFhYjI5NTNjNzMzMmY1OTIxY2MxNTA4NCIsInN1YiI6IjY1MjFmMjI0YzFmZmJkMDBhYzU2NTdjOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.fjpbTZUU4XHNmAI_rd7IEaiWKgE7HzSz4nrYo5xpMCk'
 
 const option = {
   method: 'GET',
@@ -14,7 +12,7 @@ export interface AuthProps {
   endpoint: string;
 }
 
-const Auth = async ({ endpoint }: AuthProps) => {
+const ApiMovies = async ({ endpoint }: AuthProps) => {
   try {
     const response = await fetch(endpoint, option);
     
@@ -23,6 +21,8 @@ const Auth = async ({ endpoint }: AuthProps) => {
     }
 
     const data = await response.json();
+
+    console.log(data);
 
     return data;
 
@@ -35,4 +35,4 @@ const Auth = async ({ endpoint }: AuthProps) => {
 };
 
 
-export { Auth };
+export { ApiMovies };

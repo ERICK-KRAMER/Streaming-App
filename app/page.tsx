@@ -1,13 +1,14 @@
 'use client'
 
-import { Auth } from "./api/auth";
+import { ApiMovies } from "./api/auth";
 import { ContainerItem } from "./components/container-item";
 import { ContentImage } from "./components/content-image";
+import { Pagination } from "./components/pagination";
 
 export default function Home() {
 
   const handleSubmit = async() => {
-    const data = await Auth({endpoint: 'https://api.themoviedb.org/3/movie/11'});
+    const data = await ApiMovies({endpoint: 'https://api.themoviedb.org/3/movie/now_playing'});
 
     console.log(data);
 
@@ -22,6 +23,10 @@ export default function Home() {
           name: 'The Lord of the Rings Collection'
         }}/>
       </ContainerItem>
+
+      <Pagination>
+
+      </Pagination>
 
       <button onClick={handleSubmit}>Submit</button>
 
