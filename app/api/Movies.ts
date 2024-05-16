@@ -38,6 +38,21 @@ class Movies {
     }
   }
 
+  async GetMovieByName ({name}:{ name : string }) {
+    try {
+
+      const formattedName = name.replace(/\s/g, '%20');
+      
+      const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${formattedName}&include_adult=false&language=pt-BR&page=1`, this.option);
+
+      const data = response.json();
+
+      return data;
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
 }
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { DataProps } from "./@types/Movies";
+import { DataProps, SearchProps } from "./@types/Movies";
 import { Movie } from "./api/Movies";
 import { ContainerItem } from "./components/container-item";
 import { ContentImage } from "./components/content-image";
@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Loading } from "./components/loading";
 import { Pagination } from "./components/Pagination";
 import { Genre } from "./components/genre";
-import { SearchComponent } from "./components/seach-compoent";
+import { Search } from "./components/genre/Search";
 
 export interface GenreProps {
   genres: {
@@ -21,25 +21,38 @@ export interface GenreProps {
 export default function Home() {
 
   const [page, setPage] = useState<number>(1);
-  
+  const [search, setSearch] = useState<string>('');
+  const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
+
   const handleMovie = async () => {
     const data = await Movie.GetAllMovie({ page });
     return data;
   }
 
-  const { data, isLoading, refetch } = useQuery<DataProps>({
+  const handleMovieByName = async () => {
+    const data = await Movie.GetMovieByName({ name: search });
+    return data;
+  }
+
+  const { data, isLoading,  refetch : refetchData } = useQuery<DataProps>({
     queryKey: ['getAllMovie', page],
     queryFn: handleMovie
   });
 
   const { data: genre } = useQuery<GenreProps>({
-    queryKey : ['getGenre'], 
+    queryKey: ['getGenre'],
     queryFn: Movie.GetGenres
   });
 
+  const { data: movie, isLoading: isLoadingMovie, refetch: refetchMovie } = useQuery<SearchProps>({
+    queryKey: ['movieByName'],
+    queryFn: handleMovieByName
+  });
+
   useEffect(() => {
-    refetch();
-  }, [page, refetch]);
+    refetchData();
+    refetchMovie();
+  }, [page, refetchData, refetchMovie]);
 
   const previousPage = () => {
     if (page > 1) setPage(prev => prev - 1);
@@ -49,33 +62,47 @@ export default function Home() {
     if (data && page < data?.total_pages) setPage(prev => prev + 1);
   }
 
+  const handleFindMovie = () => {
+    setShowSearchResults(true);
+    console.log(movie)
+  }
+
   return (
     <>
       <section className="container bg-neutral-300 mx-auto text-black transition duration-500 flex justify-center flex-col gap-4">
 
-        <SearchComponent/>
-        
+        <Search.Root value={search} onChange={(e) => setSearch(e.target.value)}>
+          <Search.Button onClick={handleFindMovie} />
+        </Search.Root>
+
         <Genre.Root>
-          {genre && genre.genres.map(genre => (
-            <Genre.Button name={genre.name} key={genre.id}/>
+          {genre && genre.genres && genre.genres.map(genre => (
+            <Genre.Button name={genre.name} key={genre.id} />
           ))}
         </Genre.Root>
 
         <div className="flex flex-wrap justify-center">
           {isLoading && <Loading />}
-          {data && data.results.map(movie => (
+
+          {showSearchResults && movie && movie.results && movie.results.map(movie => (
+            <ContainerItem name={movie.title} key={movie.id}>
+              <ContentImage data={{ poster_path: movie.poster_path, name: movie.title, isLoading: isLoading }} />
+            </ContainerItem>
+          ))}
+
+          {!showSearchResults && data && data.results && data.results.map(movie => (
             <ContainerItem name={movie.title} key={movie.id}>
               <ContentImage data={{ poster_path: movie.poster_path, name: movie.title, isLoading: isLoading }} />
             </ContainerItem>
           ))}
         </div>
-        
+
         <Pagination.Root>
           <Pagination.Button name={'anterior'} onClick={previousPage} />
           <Pagination.Current count={page} />
           <Pagination.Button name={'next'} onClick={nextPage} />
         </Pagination.Root>
-      
+
       </section>
     </>
   );

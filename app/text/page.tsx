@@ -1,9 +1,9 @@
-import { Loading } from "../components/loading";
+import { SearchComponent } from "../components/genre/Search/seach-compoent";
 
 export default function TestComponent() {
   return(
     <>
-     <Loading/>
+     <SearchComponent/>
     </>
   )
 }
