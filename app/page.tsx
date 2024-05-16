@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Loading } from "./components/loading";
 import { Pagination } from "./components/Pagination";
 import { Genre } from "./components/genre";
+import { SearchComponent } from "./components/seach-compoent";
 
 export interface GenreProps {
   genres: {
@@ -50,7 +51,9 @@ export default function Home() {
 
   return (
     <>
-      <section className="container bg-neutral-300 mx-auto text-black transition duration-500 flex justify-center flex-col gap-6">
+      <section className="container bg-neutral-300 mx-auto text-black transition duration-500 flex justify-center flex-col gap-4">
+
+        <SearchComponent/>
         
         <Genre.Root>
           {genre && genre.genres.map(genre => (
@@ -62,7 +65,7 @@ export default function Home() {
           {isLoading && <Loading />}
           {data && data.results.map(movie => (
             <ContainerItem name={movie.title} key={movie.id}>
-              <ContentImage data={{ poster_path: movie.poster_path, name: movie.title }} />
+              <ContentImage data={{ poster_path: movie.poster_path, name: movie.title, isLoading: isLoading }} />
             </ContainerItem>
           ))}
         </div>
