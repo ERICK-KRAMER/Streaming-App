@@ -7,11 +7,23 @@ import { ContentImage } from "./components/content-image";
 import { useQuery } from "@tanstack/react-query";
 import { Loading } from "./components/loading";
 import { Pagination } from "./components/Pagination";
+import { useState } from "react";
 
 
 export default function Home() {
 
+  const [page, setPage] = useState<number>(1);
+
   const { data, isLoading } = useQuery<DataProps>({queryKey: ['getAllMovie'], queryFn: Movie.GetAllMovie});
+
+
+  const previousPage = () => {
+    if(!(page <= 1)) setPage(prev => prev - 1);
+  }
+
+  const nextPage = () => {
+    if(data && !(page >= data?.total_pages)) setPage(prev => prev + 1);
+  }
 
   return (
     <>
@@ -28,13 +40,12 @@ export default function Home() {
            </ContainerItem>
          ))}
 
-
        </div>
 
          <Pagination.Root>
-          <Pagination.Button name={'anterior'}/>
-          <Pagination.Count count={1}/>
-          <Pagination.Button name={'next'}/>
+          <Pagination.Button name={'anterior'} onClick={previousPage}/>
+          <Pagination.Current count={page}/>
+          <Pagination.Button name={'next'} onClick={nextPage}/>
          </Pagination.Root>
 
       </section>
