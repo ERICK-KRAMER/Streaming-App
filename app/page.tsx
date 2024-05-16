@@ -8,8 +8,7 @@ import { ContentImage } from "./components/content-image";
 import { useQuery } from "@tanstack/react-query";
 import { Loading } from "./components/loading";
 import { Pagination } from "./components/Pagination";
-import { GenreComponent } from "./components/container-genre";
-import { GenreButton } from "./components/button-genre";
+import { Genre } from "./components/genre";
 
 export interface GenreProps {
   genres: {
@@ -53,11 +52,11 @@ export default function Home() {
     <>
       <section className="container bg-neutral-300 mx-auto text-black transition duration-500 flex justify-center flex-col gap-6">
         
-        <GenreComponent>
+        <Genre.Root>
           {genre && genre.genres.map(genre => (
-            <GenreButton name={genre.name} key={genre.id}/>
+            <Genre.Button name={genre.name} key={genre.id}/>
           ))}
-        </GenreComponent>
+        </Genre.Root>
 
         <div className="flex flex-wrap justify-center">
           {isLoading && <Loading />}
