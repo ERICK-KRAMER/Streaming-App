@@ -32,7 +32,10 @@ export default function Home() {
     queryFn: handleMovie
   });
 
-  const { data: genre } = useQuery<GenreProps>({queryKey : ['getGenre'], queryFn: Movie.GetGenres});
+  const { data: genre } = useQuery<GenreProps>({
+    queryKey : ['getGenre'], 
+    queryFn: Movie.GetGenres
+  });
 
   useEffect(() => {
     refetch();
