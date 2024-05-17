@@ -21,8 +21,8 @@ export interface GenreProps {
 export default function Home() {
 
   const [page, setPage] = useState<number>(1);
+
   const [search, setSearch] = useState<string>('');
-  const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
 
   const handleMovie = async () => {
     const data = await Movie.GetAllMovie({ page });
@@ -30,11 +30,14 @@ export default function Home() {
   }
 
   const handleMovieByName = async () => {
+    if (search.trim() === '') {
+      return { results: [] }; 
+    }
     const data = await Movie.GetMovieByName({ name: search });
     return data;
   }
 
-  const { data, isLoading,  refetch : refetchData } = useQuery<DataProps>({
+  const { data, isLoading, refetch: refetchData } = useQuery<DataProps>({
     queryKey: ['getAllMovie', page],
     queryFn: handleMovie
   });
@@ -45,14 +48,18 @@ export default function Home() {
   });
 
   const { data: movie, isLoading: isLoadingMovie, refetch: refetchMovie } = useQuery<SearchProps>({
-    queryKey: ['movieByName'],
-    queryFn: handleMovieByName
+    queryKey: ['movieByName', search],
+    queryFn: handleMovieByName,
+    enabled: !!search, 
   });
 
   useEffect(() => {
-    refetchData();
-    refetchMovie();
-  }, [page, refetchData, refetchMovie]);
+    if (search) {
+      refetchMovie();
+    } else {
+      refetchData();
+    }
+  }, [page, search, refetchData, refetchMovie]);
 
   const previousPage = () => {
     if (page > 1) setPage(prev => prev - 1);
@@ -62,17 +69,12 @@ export default function Home() {
     if (data && page < data?.total_pages) setPage(prev => prev + 1);
   }
 
-  const handleFindMovie = () => {
-    setShowSearchResults(true);
-    console.log(movie)
-  }
-
   return (
     <>
       <section className="container bg-neutral-300 mx-auto text-black transition duration-500 flex justify-center flex-col gap-4">
 
         <Search.Root value={search} onChange={(e) => setSearch(e.target.value)}>
-          <Search.Button onClick={handleFindMovie} />
+          <Search.Button />
         </Search.Root>
 
         <Genre.Root>
@@ -83,25 +85,32 @@ export default function Home() {
 
         <div className="flex flex-wrap justify-center">
           {isLoading && <Loading />}
+          {isLoadingMovie && <Loading />}
 
-          {showSearchResults && movie && movie.results && movie.results.map(movie => (
-            <ContainerItem name={movie.title} key={movie.id}>
-              <ContentImage data={{ poster_path: movie.poster_path, name: movie.title, isLoading: isLoading }} />
-            </ContainerItem>
-          ))}
-
-          {!showSearchResults && data && data.results && data.results.map(movie => (
-            <ContainerItem name={movie.title} key={movie.id}>
-              <ContentImage data={{ poster_path: movie.poster_path, name: movie.title, isLoading: isLoading }} />
-            </ContainerItem>
-          ))}
+          {search ? (
+            movie && movie.results && movie.results.map(movie => (
+              <ContainerItem name={movie.title} key={movie.id}>
+                <ContentImage data={{ poster_path: movie.poster_path, name: movie.title, isLoading: isLoadingMovie }} />
+              </ContainerItem>
+            ))
+          ) : (
+            data && data.results && data.results.map(movie => (
+              <ContainerItem name={movie.title} key={movie.id}>
+                <ContentImage data={{ poster_path: movie.poster_path, name: movie.title, isLoading: isLoading }} />
+              </ContainerItem>
+            ))
+          )}
         </div>
+        
+        {!search && (
 
         <Pagination.Root>
           <Pagination.Button name={'anterior'} onClick={previousPage} />
           <Pagination.Current count={page} />
           <Pagination.Button name={'next'} onClick={nextPage} />
         </Pagination.Root>
+        
+        )}
 
       </section>
     </>

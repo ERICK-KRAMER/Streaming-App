@@ -1,8 +1,8 @@
 class Movies {
   
-  private readonly token = process.env.TOKEN || 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZmI2NTVjOTFhYjI5NTNjNzMzMmY1OTIxY2MxNTA4NCIsInN1YiI6IjY1MjFmMjI0YzFmZmJkMDBhYzU2NTdjOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.fjpbTZUU4XHNmAI_rd7IEaiWKgE7HzSz4nrYo5xpMCk';
+  private readonly token = process.env.TOKEN;
 
-  private readonly option = {
+  private option = {
     method: 'GET',
     headers : {
       'Authorization': `Bearer ${this.token}`,
@@ -13,7 +13,13 @@ class Movies {
   async GetAllMovie ({page}: { page: number }) {
     try {
       
-      const response = await fetch(`https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${page}`, this.option);
+      const response = await fetch(`https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${page}`, {
+        method: 'GET',
+        headers : {
+          'Authorization': `Bearer ${this.token}`,
+          'Content-Type': 'application/json'
+        },
+      });
       
       const data = response.json();
 
@@ -27,7 +33,13 @@ class Movies {
   async GetGenres () {
     try { 
 
-      const response = await fetch('https://api.themoviedb.org/3/genre/movie/list', this.option);
+      const response = await fetch('https://api.themoviedb.org/3/genre/movie/list', {
+        method: 'GET',
+        headers : {
+          'Authorization': `Bearer ${this.token}`,
+          'Content-Type': 'application/json'
+        },
+      });
 
       const data = response.json();
 
@@ -43,7 +55,13 @@ class Movies {
 
       const formattedName = name.replace(/\s/g, '%20');
       
-      const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${formattedName}&include_adult=false&language=pt-BR&page=1`, this.option);
+      const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${formattedName}&include_adult=false&language=pt-BR&page=1`, {
+        method: 'GET',
+        headers : {
+          'Authorization': `Bearer ${this.token}`,
+          'Content-Type': 'application/json'
+        },
+      });
 
       const data = response.json();
 
