@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { DataProps, SearchProps } from "./@types/Movies";
 import { Movie } from "./api/Movies";
 import { ContainerItem } from "./components/container-item";
@@ -23,11 +23,8 @@ export interface GenreProps {
 }
 
 export default function Home() {
-
-  const [changeIcon, setChangeicon] = useState<boolean>(false)
-
+  const [changeIcon, setChangeicon] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
-
   const [search, setSearch] = useState<string>('');
 
   const handleMovie = async () => {
@@ -79,9 +76,12 @@ export default function Home() {
     setChangeicon(prev => !prev);
   }
 
+  const handleFilter = (e: FormEvent<HTMLInputElement>) => {
+    setSearch(e.currentTarget.value);
+  }
+
   return (
     <>
-
       <Header.Root>
         {!changeIcon ? (
           <>
@@ -94,7 +94,7 @@ export default function Home() {
             </Header.Nav>
           </>
         ) : (
-          <Search.Root value={search} onChange={(e) => setSearch(e.target.value)}>
+          <Search.Root onChange={(e) => setSearch(e.target.value)}>
             <Search.Button />
           </Search.Root>
         )}
@@ -102,21 +102,18 @@ export default function Home() {
         <Header.Button onClick={handleChangeIcon}>
           {changeIcon ? <X className="text-red-500"/> : <SearchIcon/> }
         </Header.Button>
-        
       </Header.Root>
 
-      <section className=" bg-zinc-900 text-white transition duration-500 flex justify-center flex-col gap-4">
-
+      <section className="bg-zinc-900 text-white transition duration-500 flex justify-center flex-col gap-4">
         <Genre.Root>
           {Alfabet.map(algarism => (
-            <Genre.Button name={algarism} key={algarism}/>
+            <Genre.Button name={algarism} key={algarism} value={algarism} onClick={(e) => handleFilter(e as unknown as FormEvent<HTMLInputElement>)}/>
           ))}
         </Genre.Root>
 
         <div className="flex flex-wrap justify-center">
           {isLoading && <Loading />}
           {isLoadingMovie && <Loading />}
-
           {search ? (
             movie && movie.results && movie.results.map(movie => (
               <ContainerItem name={movie.title} key={movie.id}>
@@ -133,15 +130,12 @@ export default function Home() {
         </div>
         
         {!search && (
-
-        <Pagination.Root>
-          <Pagination.Button name={'anterior'} onClick={previousPage} />
-          <Pagination.Current count={page} />
-          <Pagination.Button name={'next'} onClick={nextPage} />
-        </Pagination.Root>
-        
+          <Pagination.Root>
+            <Pagination.Button name={'anterior'} onClick={previousPage} />
+            <Pagination.Current count={page} />
+            <Pagination.Button name={'next'} onClick={nextPage} />
+          </Pagination.Root>
         )}
-
       </section>
     </>
   );
