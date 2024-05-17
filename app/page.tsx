@@ -13,6 +13,7 @@ import { Search } from "./components/Search";
 import { Header } from "./components/header";
 import Image from "next/image";
 import imagemLogo from "../public/Logo.png";
+import { SearchIcon, X } from "lucide-react";
 
 export interface GenreProps {
   genres: {
@@ -22,6 +23,8 @@ export interface GenreProps {
 }
 
 export default function Home() {
+
+  const [changeIcon, setChangeicon] = useState<boolean>(false)
 
   const [page, setPage] = useState<number>(1);
 
@@ -72,18 +75,37 @@ export default function Home() {
     if (data && page < data?.total_pages) setPage(prev => prev + 1);
   }
 
+  const handleChangeIcon = () => {
+    setChangeicon(prev => !prev);
+  }
+
   return (
     <>
 
       <Header.Root>
-        <Image src={imagemLogo} width={100} alt={"Stream Studio"}/>
+        {!changeIcon ? (
+          <>
+            <Image src={imagemLogo} width={100} alt={"Stream Studio"}/>
+            <Header.Nav>
+              <Header.Item name="Categories"/>
+              <Header.Item name="Series"/>
+              <Header.Item name="Anime"/>
+              <Header.Item name="TV"/>
+            </Header.Nav>
+          </>
+        ) : (
+          <Search.Root value={search} onChange={(e) => setSearch(e.target.value)}>
+            <Search.Button />
+          </Search.Root>
+        )}
+       
+        <Header.Button onClick={handleChangeIcon}>
+          {changeIcon ? <X className="text-red-500"/> : <SearchIcon/> }
+        </Header.Button>
+        
       </Header.Root>
 
       <section className=" bg-zinc-900 text-white transition duration-500 flex justify-center flex-col gap-4">
-
-        <Search.Root value={search} onChange={(e) => setSearch(e.target.value)}>
-          <Search.Button />
-        </Search.Root>
 
         <Genre.Root>
           {Alfabet.map(algarism => (

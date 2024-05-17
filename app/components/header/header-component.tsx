@@ -1,7 +1,7 @@
 const HeaderComponent = ({children}: { children?: React.ReactNode }) => {
   return (
-    <header className=" bg-transparent">
-      <div className="flex justify-center items-center">
+    <header className=" bg-transparent text-white">
+      <div className="flex justify-between items-center px-5">
         {children}
       </div>
     </header>
