@@ -8,8 +8,11 @@ import { ContentImage } from "./components/content-image";
 import { useQuery } from "@tanstack/react-query";
 import { Loading } from "./components/loading";
 import { Pagination } from "./components/Pagination";
-import { Genre } from "./components/genre";
-import { Search } from "./components/genre/Search";
+import { Genre, Alfabet } from "./components/genre";
+import { Search } from "./components/Search";
+import { Header } from "./components/header";
+import Image from "next/image";
+import imagemLogo from "../public/Logo.png";
 
 export interface GenreProps {
   genres: {
@@ -71,15 +74,20 @@ export default function Home() {
 
   return (
     <>
-      <section className="container bg-neutral-300 mx-auto text-black transition duration-500 flex justify-center flex-col gap-4">
+
+      <Header.Root>
+        <Image src={imagemLogo} width={100} alt={"Stream Studio"}/>
+      </Header.Root>
+
+      <section className=" bg-zinc-900 text-white transition duration-500 flex justify-center flex-col gap-4">
 
         <Search.Root value={search} onChange={(e) => setSearch(e.target.value)}>
           <Search.Button />
         </Search.Root>
 
         <Genre.Root>
-          {genre && genre.genres && genre.genres.map(genre => (
-            <Genre.Button name={genre.name} key={genre.id} />
+          {Alfabet.map(algarism => (
+            <Genre.Button name={algarism} key={algarism}/>
           ))}
         </Genre.Root>
 

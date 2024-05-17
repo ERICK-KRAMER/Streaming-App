@@ -6,7 +6,7 @@ interface GenreButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const GenreButton: React.FC<GenreButtonProps> = ({name, ...rest}) => {
   return(
-    <button className="h-10 p-1 px-4 bg-yellow-500 rounded-full hover:bg-red-600 transition duration-500 hover:scale-90" {...rest}>{name}</button>
+    <button className="h-10 w-10 p-1 px-4 bg-neutral-700 rounded-full hover:bg-red-600 transition duration-500 hover:scale-90 flex justify-center items-center" {...rest}>{name}</button>
   )
 }
 
