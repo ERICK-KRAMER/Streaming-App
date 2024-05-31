@@ -9,7 +9,7 @@ const InputSearch = forwardRef<HTMLInputElement, InputSearchProps>(
         ref={ref}
         type={type}
         name={name}
-        className='p-2 bg-neutral-200 rounded outline-none'
+        className='p-2 bg-neutral-200 rounded outline-none max-sm:w-full'
         {...props} />
     );
   }
