@@ -3,6 +3,7 @@
 import { API } from "./api/Movies";
 
 import { Header } from "./components/header/header"
+import { Button } from "./components/ui/button";
 
 export default function Home() {
 
@@ -15,7 +16,10 @@ export default function Home() {
   return (
     <>
       <Header />
-      <button onClick={handleClick}>CONSOLE.LOG</button>
+      <Button onClick={handleClick}>CONSOLE.LOG</Button>
+      <section>
+
+      </section>
     </>
   );
 }
