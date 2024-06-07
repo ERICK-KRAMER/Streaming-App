@@ -6,7 +6,7 @@ const Header = () => {
   const [active, setActive] = useState<boolean>(false);
 
   return (
-    <header className="bg-gradient-to-r from-transparent to-violet-800 backdrop-filter backdrop-opacity-80 flex justify-center items-center p-4 gap-4 relative">
+    <header className="bg-gradient-to-r from-transparent to-violet-800 backdrop-filter backdrop-opacity-80 flex justify-evenly items-center p-4 gap-4 relative">
 
       <Logo />
 

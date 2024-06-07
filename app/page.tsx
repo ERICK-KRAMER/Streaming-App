@@ -4,17 +4,25 @@ import { API } from "./services/Movies";
 import { Header } from "./components/header/header";
 import { useState, useEffect } from "react";
 import { Result } from "@/@types/movie";
-import Image from "next/image";
 import { Slide } from "./components/Slide/slideCompornent";
 import { SlideBanner } from "./components/Slide/slideBaner";
+import { Card } from "./components/card/card";
 
 export default function Home() {
   const [movies, setMovies] = useState<Result[]>([]);
+  const [movies2, setMovies2] = useState<Result[]>([]);
+  const [movies3, setMovies3] = useState<Result[]>([])
 
   const getMovies = async () => {
     const page = 1;
+    const page2 = 2;
+
     await API.Movies({ page })
       .then(res => setMovies(res.results));
+    await API.Movies({ page: page2 })
+      .then(res => setMovies2(res.results));
+    await API.Search({ page, name: 'serie', type: 'movie' })
+      .then(res => setMovies3(res.results));
   };
 
   useEffect(() => {
@@ -24,42 +32,55 @@ export default function Home() {
   return (
     <>
       <Header />
+      <button onClick={() => console.log(movies3)}>eriasdfas</button>
       <SlideBanner>
         {movies && movies.map(item => (
           <div
             key={item.id}
-            className="h-[600px] w-screen flex flex-col gap-4 p-10 bg-cover bg-center"
+            className="h-[600px] w-screen flex flex-col gap-4 p-10 bg-cover bg-center relative"
             style={{
               backgroundImage: `url('https://image.tmdb.org/t/p/original/${item.backdrop_path}')`,
             }}
           >
-            <h1 className="text-4xl text-white">{item.title}</h1>
-            <p className="text-white w-[500px]">{item.overview}</p>
-            <div className="flex gap-4">
-              <button className="bg-violet-700 text-white  py-2 px-4 rounded">WATCH</button>
-              <button className="bg-white text-black py-2 px-4 rounded">MY LIST +</button>
+            <div className="absolute z-10 inset-1 bg-black opacity-30 w-full h-full left-0 top-0"></div>
+
+            <h1 className="text-5xl font-bold italic text-white z-30">{item.title}</h1>
+            <p className="text-white w-[500px] z-30">{item.overview}</p>
+            <div className="flex gap-4 z-30">
+              <button className="bg-violet-700 text-white  py-2 px-4 rounded z-30">WATCH</button>
+              <button className="bg-white text-black py-2 px-4 rounded z-30">MY LIST +</button>
             </div>
           </div>
         ))}
       </SlideBanner>
 
-      <section className="py-10">
+      <section className="py-5">
+        <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {movies && movies.map(item => (
-            <div className="w-[250px] h-[375px] bg-neutral-700 rounded overflow-hidden cursor-pointer flex-shrink-0 mx-2" key={item.id}>
-              <abbr title={item.title}>
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
-                  alt={item.title}
-                  width={200}
-                  height={250}
-                  className="w-full h-full bg-cover object-cover hover:scale-105 transition"
-                />
-              </abbr>
-            </div>
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
           ))}
         </Slide>
       </section>
+
+      <section className="py-5">
+        <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
+        <Slide>
+          {movies2 && movies2.map(item => (
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
+          ))}
+        </Slide>
+      </section>
+
+      <section className="py-5">
+        <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
+        <Slide>
+          {movies3 && movies3.map(item => (
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
+          ))}
+        </Slide>
+      </section>
+
     </>
   );
 }

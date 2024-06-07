@@ -21,10 +21,10 @@ const Slide = ({ children }: SlideProps) => {
   };
 
   return (
-    <div className="relative overflow-hidden flex justify-center items-center group">
+    <div className="relative overflow-hidden flex justify-center items-center">
       <button
         onClick={prevSlide}
-        className="absolute h-full opacity-0 group-hover:opacity-50 transition-opacity duration-300 left-0 z-10 bg-neutral-950 text-white p-2"
+        className="absolute h-full opacity-40 slide-group-hover:opacity-50 transition-opacity duration-300 left-0 z-10 bg-neutral-950 text-white p-2"
       >
         <ChevronLeftCircle />
       </button>
@@ -36,7 +36,7 @@ const Slide = ({ children }: SlideProps) => {
       </div>
       <button
         onClick={nextSlide}
-        className="absolute h-full opacity-0 group-hover:opacity-50 transition-opacity duration-300 right-0 z-10 bg-neutral-950 text-white p-2"
+        className="absolute h-full opacity-40 slide-group-hover:opacity-50 transition-opacity duration-300 right-0 z-10 bg-neutral-950 text-white p-2"
       >
         <ChevronRightCircle />
       </button>
