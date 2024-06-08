@@ -1,40 +1,30 @@
 import { useState } from "react";
 import { Logo } from "./logo";
 import { Search, Gift, User } from "lucide-react";
+import { InputSearch } from "./input";
+import { HeaderButton } from "./button";
 
 const Header = () => {
-  const [active, setActive] = useState<boolean>(false);
+  const [activeButton, setActiveButton] = useState<string>("home");
+
+  const handleButtonClick = (buttonName: string) => {
+    setActiveButton(buttonName);
+  };
 
   return (
     <header className="bg-gradient-to-r from-transparent to-violet-800 backdrop-filter backdrop-opacity-80 flex justify-evenly items-center p-4 gap-4 relative">
-
       <Logo />
 
-      <nav className="text-white flex gap-4 p-4 text-opacity-75">
-        <button className="flex flex-col justify-center items-center relative">
-          Home
-          <span className=" absolute w-2 h-2 bg-cyan-200 rounded-full -bottom-2 hidden"></span>
-        </button>
-
-        <button className="flex flex-col justify-center items-center relative">
-          TvShow
-          <span className=" absolute w-2 h-2 bg-cyan-200 rounded-full -bottom-2 hidden"></span>
-        </button>
-
-        <button className="flex flex-col justify-center items-center relative">
-          Movies
-          <span className=" absolute w-2 h-2 bg-cyan-200 rounded-full -bottom-2 hidden"></span>
-        </button>
-
-        <button className="flex flex-col justify-center items-center relative">
-          New
-          <span className=" absolute w-2 h-2 bg-cyan-200 rounded-full -bottom-2 hidden"></span>
-        </button>
+      <nav className="text-white flex gap-4 p-4">
+        <HeaderButton onClick={() => handleButtonClick("home")} activeButton={activeButton} name="Home" />
+        <HeaderButton onClick={() => handleButtonClick("tvshow")} activeButton={activeButton} name="TvShow" />
+        <HeaderButton onClick={() => handleButtonClick("movies")} activeButton={activeButton} name="Movies" />
+        <HeaderButton onClick={() => handleButtonClick("new")} activeButton={activeButton} name="New" />
       </nav>
 
       <nav className="text-white flex justify-center items-center gap-4">
         <div className="relative">
-          <input
+          <InputSearch
             type="text"
             className="rounded-xl bg-slate-400 h-8 w-72 outline-none px-3 "
           />
@@ -43,9 +33,8 @@ const Header = () => {
         <Gift className="cursor-pointer" />
         <User className="cursor-pointer" />
       </nav>
-
     </header>
-  )
-}
+  );
+};
 
 export { Header };
