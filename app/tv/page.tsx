@@ -9,8 +9,11 @@ import { Slide } from "../components/Slide/slideCompornent";
 import { Card } from "../components/card/card";
 import { Button } from "../components/ui/button";
 import { Heart } from "lucide-react";
+import { useHeaderContext } from "../context/headerContext";
 
 export default function Tv() {
+  const { handleGetMovie } = useHeaderContext();
+
   const [series, setSeries] = useState<Result[]>([]);
   const [series2, setSeries2] = useState<Result[]>([]);
   const [series4, setSeries4] = useState<Result[]>([])
@@ -60,7 +63,7 @@ export default function Tv() {
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {series && series.map(item => (
-            <Card title={item.name} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.name} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>
@@ -69,7 +72,7 @@ export default function Tv() {
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {series2 && series2.map(item => (
-            <Card title={item.name} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.name} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>
@@ -78,7 +81,7 @@ export default function Tv() {
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {series3 && series3.map(item => (
-            <Card title={item.name} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.name} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>
@@ -87,7 +90,7 @@ export default function Tv() {
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {series4 && series4.map(item => (
-            <Card title={item.name} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.name} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>

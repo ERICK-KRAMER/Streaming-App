@@ -15,7 +15,7 @@ import { useHeaderContext } from "./context/headerContext";
 
 export default function Home() {
 
-  const { getMovie } = useHeaderContext();
+  const { handleGetMovie } = useHeaderContext();
 
   const [releases, steReleases] = useState<Movies[]>([]);
   const [movies, setMovies] = useState<Movies[]>([]);
@@ -74,7 +74,7 @@ export default function Home() {
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {movies && movies.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>
@@ -83,7 +83,7 @@ export default function Home() {
         <h1 className="font-bold text-white p-3">SERIES</h1>
         <Slide>
           {series && series.map(item => (
-            <Card title={item.name} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.name} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>
@@ -92,7 +92,7 @@ export default function Home() {
         <h1 className="font-bold text-white p-3">SERIES</h1>
         <Slide>
           {series2 && series2.map(item => (
-            <Card title={item.name} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.name} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>
@@ -101,7 +101,7 @@ export default function Home() {
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {movies3 && movies3.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>
@@ -110,7 +110,7 @@ export default function Home() {
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {movies4 && movies4.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>

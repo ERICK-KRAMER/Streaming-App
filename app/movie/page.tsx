@@ -9,8 +9,11 @@ import { SlideBanner } from "../components/Slide/slideBaner";
 import { Card } from "../components/card/card";
 import { Heart } from "lucide-react";
 import { Button } from "../components/ui/button";
+import { useHeaderContext } from "../context/headerContext";
 
 export default function Home() {
+  const { handleGetMovie } = useHeaderContext();
+
   const [movies, setMovies] = useState<Result[]>([]);
   const [movies2, setMovies2] = useState<Result[]>([]);
   const [movies4, setMovies4] = useState<Result[]>([])
@@ -60,7 +63,7 @@ export default function Home() {
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {movies && movies.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>
@@ -69,7 +72,7 @@ export default function Home() {
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {movies2 && movies2.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>
@@ -78,7 +81,7 @@ export default function Home() {
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {movies3 && movies3.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>
@@ -87,7 +90,7 @@ export default function Home() {
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
           {movies4 && movies4.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
           ))}
         </Slide>
       </section>
