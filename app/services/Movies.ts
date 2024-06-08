@@ -6,7 +6,9 @@ class Movie {
 
   private search = 'https://api.themoviedb.org/3/search';
 
-  private person = 'https://api.themoviedb.org/3/person';
+  private person = 'https://api.themoviedb.org/3/person/';
+
+  private tv = 'https://api.themoviedb.org/3/trending/tv'
 
   private colection = 'https://api.themoviedb.org/3/collection';
 
@@ -33,8 +35,6 @@ class Movie {
     }
   }
 
-
-
   async Search({ page = 1, type = 'movie', name = 'harry potter' }: { page?: number, type?: string, name: string }) {
     try {
       const nameRegex = name.trim().replace(/ /g, "%20");
@@ -51,6 +51,37 @@ class Movie {
 
     }
   }
+
+  async Tv({ day, page }: { day: string, page: number }) {
+    try {
+      const response = await fetch(`${this.tv}/${day}?language=pt-BR&page=${page}`, this.option);
+
+      const data = await response.json();
+
+      return data;
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+  }
+
+  async AllPeople() {
+    try {
+      const response = await fetch(`${this.person}/popular`, this.option);
+
+      const data = await response.json();
+
+      return data;
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+  }
+
 
 
   // async Colection() {

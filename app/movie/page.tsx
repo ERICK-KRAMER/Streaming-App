@@ -1,12 +1,12 @@
 'use client';
 
-import { API } from "./services/Movies";
-import { Header } from "./components/header/header";
+import { API } from "../services/Movies";
+import { Header } from "../components/header/header";
 import { useState, useEffect } from "react";
 import { Result } from "@/@types/movie";
-import { Slide } from "./components/Slide/slideCompornent";
-import { SlideBanner } from "./components/Slide/slideBaner";
-import { Card } from "./components/card/card";
+import { Slide } from "../components/Slide/slideCompornent";
+import { SlideBanner } from "../components/Slide/slideBaner";
+import { Card } from "../components/card/card";
 
 export default function Home() {
   const [movies, setMovies] = useState<Result[]>([]);
@@ -19,7 +19,7 @@ export default function Home() {
       .then(res => setMovies(res.results));
     await API.Movies({ page: 2 })
       .then(res => setMovies2(res.results));
-    await API.Movies({ page: 3 })
+    await API.Search({ page: 1, name: 'serie', type: 'movie' })
       .then(res => setMovies3(res.results));
     await API.Movies({ page: 4 })
       .then(res => setMovies4(res.results));
