@@ -1,16 +1,13 @@
-import { useState } from "react";
 import { Logo } from "./logo";
 import { Search, Gift, User } from "lucide-react";
 import { InputSearch } from "./input";
 import { HeaderButton } from "./button";
 import Link from "next/link";
+import { useHeaderContext } from "@/app/context/headerContext";
 
 const Header = () => {
-  const [activeButton, setActiveButton] = useState<string>("home");
 
-  const handleButtonClick = (buttonName: string) => {
-    setActiveButton(buttonName);
-  };
+  const { activeButton, selectPage } = useHeaderContext();
 
   return (
     <header className="bg-gradient-to-r from-transparent to-violet-800 backdrop-filter backdrop-opacity-80 flex justify-evenly items-center p-4 gap-4 relative">
@@ -18,16 +15,16 @@ const Header = () => {
 
       <nav className="text-white flex gap-4 p-4">
         <Link href={'/'} >
-          <HeaderButton onClick={() => handleButtonClick("home")} activeButton={activeButton} name="Home" />
+          <HeaderButton onClick={() => selectPage("home")} activeButton={activeButton} name="Home" />
         </Link>
         <Link href={'/tv'}>
-          <HeaderButton onClick={() => handleButtonClick("tvshow")} activeButton={activeButton} name="TvShow" />
+          <HeaderButton onClick={() => selectPage("tvshow")} activeButton={activeButton} name="Tv Show" />
         </Link>
         <Link href={'/movie'}>
-          <HeaderButton onClick={() => handleButtonClick("movies")} activeButton={activeButton} name="Movies" />
+          <HeaderButton onClick={() => selectPage("movies")} activeButton={activeButton} name="Movies" />
         </Link>
         <Link href={'#'}>
-          <HeaderButton onClick={() => handleButtonClick("new")} activeButton={activeButton} name="New" />
+          <HeaderButton onClick={() => selectPage("new")} activeButton={activeButton} name="My list" />
         </Link>
       </nav>
 
