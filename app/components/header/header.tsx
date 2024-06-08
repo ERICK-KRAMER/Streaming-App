@@ -3,6 +3,7 @@ import { Logo } from "./logo";
 import { Search, Gift, User } from "lucide-react";
 import { InputSearch } from "./input";
 import { HeaderButton } from "./button";
+import Link from "next/link";
 
 const Header = () => {
   const [activeButton, setActiveButton] = useState<string>("home");
@@ -16,10 +17,18 @@ const Header = () => {
       <Logo />
 
       <nav className="text-white flex gap-4 p-4">
-        <HeaderButton onClick={() => handleButtonClick("home")} activeButton={activeButton} name="Home" />
-        <HeaderButton onClick={() => handleButtonClick("tvshow")} activeButton={activeButton} name="TvShow" />
-        <HeaderButton onClick={() => handleButtonClick("movies")} activeButton={activeButton} name="Movies" />
-        <HeaderButton onClick={() => handleButtonClick("new")} activeButton={activeButton} name="New" />
+        <Link href={'/'} >
+          <HeaderButton onClick={() => handleButtonClick("home")} activeButton={activeButton} name="Home" />
+        </Link>
+        <Link href={'/tv'}>
+          <HeaderButton onClick={() => handleButtonClick("tvshow")} activeButton={activeButton} name="TvShow" />
+        </Link>
+        <Link href={'/movie'}>
+          <HeaderButton onClick={() => handleButtonClick("movies")} activeButton={activeButton} name="Movies" />
+        </Link>
+        <Link href={'#'}>
+          <HeaderButton onClick={() => handleButtonClick("new")} activeButton={activeButton} name="New" />
+        </Link>
       </nav>
 
       <nav className="text-white flex justify-center items-center gap-4">

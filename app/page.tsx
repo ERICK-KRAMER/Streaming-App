@@ -3,25 +3,34 @@
 import { API } from "./services/Movies";
 import { Header } from "./components/header/header";
 import { useState, useEffect } from "react";
-import { Result } from "@/@types/movie";
+import { Result as Movies } from "@/@types/movie";
+import { Result as Series } from "@/@types/series";
 import { Slide } from "./components/Slide/slideCompornent";
 import { SlideBanner } from "./components/Slide/slideBaner";
 import { Card } from "./components/card/card";
+import { Footer } from "./components/footer/footer";
 
 export default function Home() {
-  const [movies, setMovies] = useState<Result[]>([]);
-  const [movies2, setMovies2] = useState<Result[]>([]);
-  const [movies4, setMovies4] = useState<Result[]>([])
-  const [movies3, setMovies3] = useState<Result[]>([]);
+
+  const [releases, steReleases] = useState<Movies[]>([]);
+  const [movies, setMovies] = useState<Movies[]>([]);
+  const [series, setSeries] = useState<Series[]>([]);
+  const [series2, setSeries2] = useState<Series[]>([]);
+  const [movies4, setMovies4] = useState<Movies[]>([])
+  const [movies3, setMovies3] = useState<Movies[]>([]);
 
   const getMovies = async () => {
     await API.Movies({ page: 1 })
-      .then(res => setMovies(res.results));
+      .then(res => steReleases(res.results));
     await API.Movies({ page: 2 })
-      .then(res => setMovies2(res.results));
-    await API.Movies({ page: 3 })
-      .then(res => setMovies3(res.results));
+      .then(res => setMovies(res.results));
+    await API.Tv({ day: 'day', page: 1 })
+      .then(res => setSeries(res.results));
+    await API.Tv({ day: 'week', page: 2 })
+      .then(res => setSeries2(res.results));
     await API.Movies({ page: 4 })
+      .then(res => setMovies3(res.results));
+    await API.Movies({ page: 5 })
       .then(res => setMovies4(res.results));
   };
 
@@ -34,7 +43,7 @@ export default function Home() {
       <Header />
 
       <SlideBanner>
-        {movies && movies.map(item => (
+        {releases && releases.map(item => (
           <div
             key={item.id}
             className="h-[600px] w-screen flex flex-col gap-4 p-10 bg-cover bg-top relative"
@@ -64,10 +73,19 @@ export default function Home() {
       </section>
 
       <section className="py-5">
-        <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
+        <h1 className="font-bold text-white p-3">SERIES</h1>
         <Slide>
-          {movies2 && movies2.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
+          {series && series.map(item => (
+            <Card title={item.name} id={item.id} poster_path={item.poster_path} />
+          ))}
+        </Slide>
+      </section>
+
+      <section className="py-5">
+        <h1 className="font-bold text-white p-3">SERIES</h1>
+        <Slide>
+          {series2 && series2.map(item => (
+            <Card title={item.name} id={item.id} poster_path={item.poster_path} />
           ))}
         </Slide>
       </section>
@@ -89,6 +107,8 @@ export default function Home() {
           ))}
         </Slide>
       </section>
+
+      <Footer />
 
     </>
   );
