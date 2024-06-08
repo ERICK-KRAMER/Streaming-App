@@ -18,13 +18,13 @@ const Header = () => {
           <HeaderButton onClick={() => selectPage("home")} activeButton={activeButton} name="Home" />
         </Link>
         <Link href={'/tv'}>
-          <HeaderButton onClick={() => selectPage("tvshow")} activeButton={activeButton} name="Tv Show" />
+          <HeaderButton onClick={() => selectPage("tvshow")} activeButton={activeButton} name="TvShow" />
         </Link>
         <Link href={'/movie'}>
           <HeaderButton onClick={() => selectPage("movies")} activeButton={activeButton} name="Movies" />
         </Link>
         <Link href={'#'}>
-          <HeaderButton onClick={() => selectPage("new")} activeButton={activeButton} name="My list" />
+          <HeaderButton onClick={() => selectPage("new")} activeButton={activeButton} name="New" />
         </Link>
       </nav>
 

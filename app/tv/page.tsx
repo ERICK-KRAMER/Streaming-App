@@ -7,10 +7,11 @@ import { Header } from "../components/header/header";
 import { SlideBanner } from "../components/Slide/slideBaner";
 import { Slide } from "../components/Slide/slideCompornent";
 import { Card } from "../components/card/card";
+import { Button } from "../components/ui/button";
+import { Heart } from "lucide-react";
 
 export default function Tv() {
   const [series, setSeries] = useState<Result[]>([]);
-  const [test, setTest] = useState<Result[]>([]);
   const [series2, setSeries2] = useState<Result[]>([]);
   const [series4, setSeries4] = useState<Result[]>([])
   const [series3, setSeries3] = useState<Result[]>([]);
@@ -48,8 +49,8 @@ export default function Tv() {
             <h1 className="text-5xl font-bold italic text-white z-30">{item.name}</h1>
             <p className="text-white w-[500px] z-30">{item.overview}</p>
             <div className="flex gap-4 z-30">
-              <button className="bg-violet-700 text-white  py-2 px-4 rounded z-30">WATCH</button>
-              <button className="bg-white text-black py-2 px-4 rounded z-30">MY LIST +</button>
+              <Button className="bg-violet-700 text-white py-2 px-4 rounded hover:bg-none">WATCH</Button>
+              <Button className="bg-white text-black py-2 px-4 rounded flex justify-center items-center gap-3">MY LIST <Heart /></Button>
             </div>
           </div>
         ))}

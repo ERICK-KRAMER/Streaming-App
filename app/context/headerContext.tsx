@@ -24,7 +24,6 @@ const HeaderContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const selectPage = (buttonName: string) => {
     setActiveButton(buttonName);
-    console.log(buttonName);
   };
 
   const attributes: HeaderContextProps = {
