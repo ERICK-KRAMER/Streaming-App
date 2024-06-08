@@ -11,8 +11,11 @@ import { Card } from "./components/card/card";
 import { Footer } from "./components/footer/footer";
 import { Button } from "./components/ui/button";
 import { Heart } from "lucide-react";
+import { useHeaderContext } from "./context/headerContext";
 
 export default function Home() {
+
+  const { getMovie } = useHeaderContext();
 
   const [releases, steReleases] = useState<Movies[]>([]);
   const [movies, setMovies] = useState<Movies[]>([]);

@@ -1,10 +1,13 @@
 'use client';
 
+import { Result } from "@/@types/movie";
 import { createContext, useContext, useState } from "react";
 
 interface HeaderContextProps {
   selectPage: (buttonName: string) => void;
+  handleGetMovie: (movie: Result) => void;
   activeButton: string;
+  getMovie: Result | null;
 }
 
 const HeaderContext = createContext<HeaderContextProps>({} as HeaderContextProps);
@@ -21,14 +24,22 @@ const useHeaderContext = () => {
 
 const HeaderContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [activeButton, setActiveButton] = useState<string>("home");
+  const [getMovie, setGetMovie] = useState<Result | null>(null);
 
   const selectPage = (buttonName: string) => {
     setActiveButton(buttonName);
   };
 
+  const handleGetMovie = (movie: Result) => {
+    setGetMovie(movie);
+    console.log(movie);
+  }
+
   const attributes: HeaderContextProps = {
-    activeButton,
     selectPage,
+    handleGetMovie,
+    activeButton,
+    getMovie,
   };
 
   return <HeaderContext.Provider value={attributes}>{children}</HeaderContext.Provider>

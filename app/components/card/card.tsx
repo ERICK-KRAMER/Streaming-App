@@ -1,16 +1,17 @@
 import Image from "next/image";
 import { Play } from "lucide-react";
+import { HTMLAttributes } from "react";
 
-type CardProps = {
+interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   title: string;
   id: number | string;
   poster_path: string;
 };
 
-const Card = ({ title, id, poster_path }: CardProps) => {
+const Card: React.FC<CardProps> = ({ title, id, poster_path, ...props }) => {
   return (
     <>
-      <div className="w-[250px] h-[375px] bg-neutral-700 rounded overflow-hidden cursor-pointer flex-shrink-0 mx-2 " key={id}>
+      <div className="w-[250px] h-[375px] bg-neutral-700 rounded overflow-hidden cursor-pointer flex-shrink-0 mx-2 " {...props} key={id}>
 
         <abbr title={title} className="relative block w-full h-full group">
 
