@@ -2,11 +2,13 @@
 
 import { Result as Serie } from "@/@types/series";
 import { Result as Movie } from "@/@types/movie";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
+import { API } from "../services/Movies";
 
 interface HeaderContextProps {
   selectPage: (buttonName: string) => void;
   handleGetMovie: (movie: Movie | Serie) => void;
+  handleGetTitle: (title: string) => Promise<(Movie | Serie)[]>;
   activeButton: string;
   Movie: Movie | Serie | null;
 }
@@ -23,7 +25,7 @@ const useHeaderContext = () => {
   return context;
 };
 
-const HeaderContextProvider = ({ children }: { children: React.ReactNode }) => {
+const HeaderContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeButton, setActiveButton] = useState<string>("home");
   const [Movie, setMovie] = useState<Movie | Serie | null>(null);
 
@@ -36,9 +38,19 @@ const HeaderContextProvider = ({ children }: { children: React.ReactNode }) => {
     console.log(movie);
   }
 
+  const handleGetTitle = async (title: string) => {
+
+    const data = await API.Search({ page: 1, type: 'movie', name: title });
+
+    setMovie(data.results);
+
+    return data.results;
+  }
+
   const attributes: HeaderContextProps = {
     selectPage,
     handleGetMovie,
+    handleGetTitle,
     activeButton,
     Movie,
   };

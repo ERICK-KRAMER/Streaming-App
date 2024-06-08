@@ -7,7 +7,7 @@ import { Result } from "@/@types/movie";
 import { Slide } from "../components/Slide/slideCompornent";
 import { SlideBanner } from "../components/Slide/slideBaner";
 import { Card } from "../components/card/card";
-import { Heart } from "lucide-react";
+import { Heart, Play } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useHeaderContext } from "../context/headerContext";
 
@@ -52,7 +52,7 @@ export default function Home() {
             <h1 className="text-5xl font-bold italic text-white z-30">{item.title}</h1>
             <p className="text-white w-[500px] z-30">{item.overview}</p>
             <div className="flex gap-4 z-30">
-              <Button className="bg-violet-700 text-white py-2 px-4 rounded hover:bg-none">WATCH</Button>
+              <Button className="bg-violet-700 text-white py-2 px-4 rounded flex justify-center items-center gap-3">WATCH <Play /></Button>
               <Button className="bg-white text-black py-2 px-4 rounded flex justify-center items-center gap-3">MY LIST <Heart /></Button>
             </div>
           </div>
