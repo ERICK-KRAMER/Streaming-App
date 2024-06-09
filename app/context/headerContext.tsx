@@ -11,6 +11,7 @@ interface HeaderContextProps {
   handleGetTitle: (title: string) => Promise<(Movie | Serie)[]>;
   activeButton: string;
   Movie: Movie | Serie | null;
+  getTitle: Movie[];
 }
 
 const HeaderContext = createContext<HeaderContextProps>({} as HeaderContextProps);
@@ -28,6 +29,7 @@ const useHeaderContext = () => {
 const HeaderContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeButton, setActiveButton] = useState<string>("home");
   const [Movie, setMovie] = useState<Movie | Serie | null>(null);
+  const [getTitle, setGetTitle] = useState<Movie[]>([]);
 
   const selectPage = (buttonName: string) => {
     setActiveButton(buttonName);
@@ -42,7 +44,7 @@ const HeaderContextProvider = ({ children }: { children: ReactNode }) => {
 
     const data = await API.Search({ page: 1, type: 'movie', name: title });
 
-    setMovie(data.results);
+    setGetTitle(data.results);
 
     return data.results;
   }
@@ -53,6 +55,7 @@ const HeaderContextProvider = ({ children }: { children: ReactNode }) => {
     handleGetTitle,
     activeButton,
     Movie,
+    getTitle,
   };
 
   return <HeaderContext.Provider value={attributes}>{children}</HeaderContext.Provider>

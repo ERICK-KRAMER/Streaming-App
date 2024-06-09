@@ -10,18 +10,20 @@ import Image from "next/image";
 
 const Header = () => {
 
-  const { activeButton, selectPage } = useHeaderContext();
+  const { activeButton, selectPage, handleGetTitle, getTitle } = useHeaderContext();
   const [showList, setShowList] = useState<boolean>(false);
 
   const searchRef = useRef<HTMLInputElement>(null);
 
-  const handleSearchChange = () => {
+  const handleSearchChange = async () => {
     if (searchRef.current) {
       console.log(searchRef.current.value);
     }
 
     if (searchRef.current?.value && searchRef.current.value.length > 0) {
       setShowList(true);
+      await handleGetTitle(searchRef.current.value);
+      console.log(getTitle);
     } else {
       setShowList(false);
     }
@@ -56,21 +58,22 @@ const Header = () => {
           />
           <Search className="absolute right-2 top-1 text-black cursor-pointer z-30" />
 
-          <div className={`p-4 bg-white rounded border w-[400px] absolute -right-[25%] top-10 z-50 ${showList ? '' : 'hidden'}`}>
+          <div className={`p-2 bg-white rounded border w-[400px] h-[435px] overflow-y-scroll absolute -right-[25%] top-10 z-50 ${showList ? '' : 'hidden'}`}>
             <Table>
               <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <Image
-                      src={''}
-                      alt={''}
-                      width={10}
-                      height={10}
-                      className=" bg-red-500"
-                    />
-                  </TableCell>
-                  <TableCell>{'erick'}</TableCell>
-                </TableRow>
+                {getTitle && getTitle.map(item => (
+                  <TableRow>
+                    <TableCell>
+                      <Image
+                        src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
+                        alt={item.title}
+                        width={120}
+                        height={10}
+                      />
+                    </TableCell>
+                    <TableCell className="text-black">{item.title}</TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>

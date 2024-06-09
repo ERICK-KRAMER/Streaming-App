@@ -8,8 +8,9 @@ import { SlideBanner } from "../components/Slide/slideBaner";
 import { Slide } from "../components/Slide/slideCompornent";
 import { Card } from "../components/card/card";
 import { Button } from "../components/ui/button";
-import { Heart, Play } from "lucide-react";
+import { ChevronDown, Heart, Play } from "lucide-react";
 import { useHeaderContext } from "../context/headerContext";
+import { Footer } from "../components/footer/footer";
 
 export default function Tv() {
   const { handleGetMovie } = useHeaderContext();
@@ -47,11 +48,11 @@ export default function Tv() {
               backgroundImage: `url('https://image.tmdb.org/t/p/original/${item.backdrop_path}')`,
             }}
           >
-            <div className="absolute z-10 inset-1 bg-black opacity-30 w-full h-full left-0 top-0"></div>
+            {/* <div className="absolute z-10 inset-1 bg-black opacity-30 w-full h-full left-0 top-0"></div> */}
 
-            <h1 className="text-5xl font-bold italic text-white z-30">{item.name}</h1>
-            <p className="text-white w-[500px] z-30">{item.overview}</p>
-            <div className="flex gap-4 z-30">
+            <h1 className="text-5xl font-bold italic text-white">{item.name}</h1>
+            <p className="text-white w-[500px]">{item.overview}</p>
+            <div className="flex gap-4">
               <Button className="bg-violet-700 text-white py-2 px-4 rounded flex justify-center items-center gap-3">WATCH <Play /></Button>
               <Button className="bg-white text-black py-2 px-4 rounded flex justify-center items-center gap-3">MY LIST <Heart /></Button>
             </div>
@@ -95,6 +96,11 @@ export default function Tv() {
         </Slide>
       </section>
 
+      <div className="flex justify-center items-center p-4">
+        <Button className="bg-violet-800 text-white px-8 rounded-full flex gap-2 hover:bg-violet-900 transition duration-500">More <ChevronDown /></Button>
+      </div>
+
+      <Footer />
     </>
   );
 }
