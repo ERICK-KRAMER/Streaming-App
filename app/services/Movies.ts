@@ -10,8 +10,6 @@ class Movie {
 
   private tv = 'https://api.themoviedb.org/3/trending/tv'
 
-  private colection = 'https://api.themoviedb.org/3/collection';
-
   private option = {
     method: 'GET',
     headers: {
@@ -81,23 +79,6 @@ class Movie {
 
     }
   }
-
-
-
-  // async Colection() {
-  //   try {
-  //     const response = await fetch(`${this.colection}/`, this.option);
-
-  //     const data = await response.json();
-
-  //     return data;
-
-  //   } catch (error) {
-
-  //     console.log(error);
-
-  //   }
-  // }
 
 }
 

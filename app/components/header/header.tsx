@@ -3,27 +3,22 @@ import { Search, Gift, User } from "lucide-react";
 import { InputSearch } from "./input";
 import { HeaderButton } from "./button";
 import Link from "next/link";
-import { useHeaderContext } from "@/app/context/headerContext";
 import { useRef, useState } from "react";
+import { useHeaderContext } from "@/app/context/headerContext";
 import { Table, TableBody, TableCell, TableRow } from "../ui/table";
 import Image from "next/image";
 
 const Header = () => {
 
-  const { activeButton, selectPage, handleGetTitle, getTitle } = useHeaderContext();
+  const { activeButton, selectPage, handleGetTitle, getTitle, handleGetMovie } = useHeaderContext();
   const [showList, setShowList] = useState<boolean>(false);
 
   const searchRef = useRef<HTMLInputElement>(null);
 
   const handleSearchChange = async () => {
-    if (searchRef.current) {
-      console.log(searchRef.current.value);
-    }
-
     if (searchRef.current?.value && searchRef.current.value.length > 0) {
       setShowList(true);
       await handleGetTitle(searchRef.current.value);
-      console.log(getTitle);
     } else {
       setShowList(false);
     }
@@ -62,7 +57,7 @@ const Header = () => {
             <Table>
               <TableBody>
                 {getTitle && getTitle.map(item => (
-                  <TableRow>
+                  <TableRow onClick={() => handleGetMovie(item)}>
                     <TableCell>
                       <Image
                         src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}

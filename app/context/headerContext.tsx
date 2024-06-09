@@ -7,10 +7,10 @@ import { API } from "../services/Movies";
 
 interface HeaderContextProps {
   selectPage: (buttonName: string) => void;
-  handleGetMovie: (movie: Movie | Serie) => void;
+  handleGetMovie: (movie: Movie) => void;
   handleGetTitle: (title: string) => Promise<(Movie | Serie)[]>;
   activeButton: string;
-  Movie: Movie | Serie | null;
+  Movie: Movie | null;
   getTitle: Movie[];
 }
 
@@ -28,14 +28,14 @@ const useHeaderContext = () => {
 
 const HeaderContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeButton, setActiveButton] = useState<string>("home");
-  const [Movie, setMovie] = useState<Movie | Serie | null>(null);
+  const [Movie, setMovie] = useState<Movie | null>(null);
   const [getTitle, setGetTitle] = useState<Movie[]>([]);
 
   const selectPage = (buttonName: string) => {
     setActiveButton(buttonName);
   };
 
-  const handleGetMovie = (movie: Movie | Serie) => {
+  const handleGetMovie = (movie: Movie) => {
     setMovie(movie);
     console.log(movie);
   }
