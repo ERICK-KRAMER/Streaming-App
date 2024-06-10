@@ -25,18 +25,20 @@ export default function Home() {
   const [movies3, setMovies3] = useState<Movies[]>([]);
 
   const getMovies = async () => {
-    await API.Movies({ page: 1 })
-      .then(res => steReleases(res.results));
-    await API.Movies({ page: 2 })
-      .then(res => setMovies(res.results));
-    await API.Tv({ day: 'day', page: 1 })
-      .then(res => setSeries(res.results));
-    await API.Tv({ day: 'week', page: 2 })
-      .then(res => setSeries2(res.results));
-    await API.Movies({ page: 4 })
-      .then(res => setMovies3(res.results));
-    await API.Movies({ page: 5 })
-      .then(res => setMovies4(res.results));
+    Promise.all([
+      await API.Movies({ page: 1 })
+        .then(res => steReleases(res.results)),
+      await API.Movies({ page: 2 })
+        .then(res => setMovies(res.results)),
+      await API.Tv({ day: 'day', page: 1 })
+        .then(res => setSeries(res.results)),
+      await API.Tv({ day: 'week', page: 2 })
+        .then(res => setSeries2(res.results)),
+      await API.Movies({ page: 4 })
+        .then(res => setMovies3(res.results)),
+      await API.Movies({ page: 5 })
+        .then(res => setMovies4(res.results)),
+    ])
   };
 
   useEffect(() => {

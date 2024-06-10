@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { API } from "../services/Movies";
 import { Header } from "../components/header/header";
 import { SlideBanner } from "../components/Slide/slideBaner";
-import { Slide } from "../components/Slide/slideCompornent";
 import { Card } from "../components/card/card";
 import { Button } from "../components/ui/button";
 import { Heart, Play } from "lucide-react";
@@ -21,10 +20,14 @@ export default function Tv() {
   const [banner, setBanner] = useState<Result[]>([]);
 
   const getSeries = async () => {
-    await API.Tv({ day: 'day', page: 1 })
-      .then(res => setBanner(res.results));
-    await API.Tv({ day: 'day', page: count })
-      .then(res => setSeries(res.results));
+    Promise.all([
+      await API.Tv({ day: 'day', page: 1 })
+        .then(res => setBanner(res.results)),
+
+      await API.Tv({ day: 'day', page: count })
+        .then(res => setSeries(res.results))
+
+    ])
   };
 
   useEffect(() => {
@@ -58,7 +61,7 @@ export default function Tv() {
         <h1 className="font-bold text-white p-3">TOP SERIES</h1>
         <div className="grid grid-cols-6 gap-4">
           {series && series.map(item => (
-            <Card title={item.name} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.name} id={item.id} poster_path={item.poster_path} key={item.id} onClick={() => handleGetMovie(item)} />
           ))}
         </div>
 

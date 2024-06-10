@@ -5,13 +5,15 @@ import { Result as Movie } from "@/@types/movie";
 import { createContext, useContext, useState, ReactNode } from "react";
 import { API } from "../services/Movies";
 
+type Media = Movie | Serie;
+
 interface HeaderContextProps {
   selectPage: (buttonName: string) => void;
-  handleGetMovie: (movie: Movie) => void;
-  handleGetTitle: (title: string) => Promise<(Movie | Serie)[]>;
+  handleGetMovie: (media: Media) => void;
+  handleGetTitle: (title: string) => Promise<Media[]>;
   activeButton: string;
-  Movie: Movie | null;
-  getTitle: Movie[];
+  media: Media | null;
+  getTitle: Media[];
 }
 
 const HeaderContext = createContext<HeaderContextProps>({} as HeaderContextProps);
@@ -27,26 +29,28 @@ const useHeaderContext = () => {
 };
 
 const HeaderContextProvider = ({ children }: { children: ReactNode }) => {
-  const [activeButton, setActiveButton] = useState<string>("home");
-  const [Movie, setMovie] = useState<Movie | null>(null);
-  const [getTitle, setGetTitle] = useState<Movie[]>([]);
+  const action = sessionStorage.getItem('action-button');
+
+  const [activeButton, setActiveButton] = useState<string>(String(action));
+
+  const [media, setMedia] = useState<Media | null>(null);
+
+  const [getTitle, setGetTitle] = useState<Media[]>([]);
 
   const selectPage = (buttonName: string) => {
+    sessionStorage.setItem('action-button', buttonName);
     setActiveButton(buttonName);
   };
 
-  const handleGetMovie = (movie: Movie) => {
-    setMovie(movie);
-    console.log(movie);
+  const handleGetMovie = (media: Media) => {
+    setMedia(media);
+    console.log(media);
   }
 
   const handleGetTitle = async (title: string) => {
-
     const data = await API.Search({ page: 1, type: 'movie', name: title });
-
-    setGetTitle(data.results);
-
-    return data.results;
+    setGetTitle(data.results as Media[]);
+    return data.results as Media[];
   }
 
   const attributes: HeaderContextProps = {
@@ -54,7 +58,7 @@ const HeaderContextProvider = ({ children }: { children: ReactNode }) => {
     handleGetMovie,
     handleGetTitle,
     activeButton,
-    Movie,
+    media,
     getTitle,
   };
 

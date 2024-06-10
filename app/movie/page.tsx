@@ -7,40 +7,38 @@ import { Result } from "@/@types/movie";
 import { Slide } from "../components/Slide/slideCompornent";
 import { SlideBanner } from "../components/Slide/slideBaner";
 import { Card } from "../components/card/card";
-import { ChevronDown, Heart, Play } from "lucide-react";
+import { Heart, Play } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useHeaderContext } from "../context/headerContext";
 import { Footer } from "../components/footer/footer";
+import { useCount } from "../hooks/useCount";
 
 export default function Home() {
   const { handleGetMovie } = useHeaderContext();
+  const { count, nextCount, prevCount } = useCount();
 
   const [movies, setMovies] = useState<Result[]>([]);
-  const [movies2, setMovies2] = useState<Result[]>([]);
-  const [movies4, setMovies4] = useState<Result[]>([])
-  const [movies3, setMovies3] = useState<Result[]>([]);
+  const [banner, setBanner] = useState<Result[]>([]);
 
   const getMovies = async () => {
-    await API.Movies({ page: 1 })
-      .then(res => setMovies(res.results));
-    await API.Movies({ page: 2 })
-      .then(res => setMovies2(res.results));
-    await API.Search({ page: 1, name: 'serie', type: 'movie' })
-      .then(res => setMovies3(res.results));
-    await API.Movies({ page: 4 })
-      .then(res => setMovies4(res.results));
+    Promise.all([
+      await API.Movies({ page: count })
+        .then(res => setMovies(res.results)),
+      await API.Movies({ page: 2 })
+        .then(res => setBanner(res.results))
+    ]);
   };
 
   useEffect(() => {
     getMovies();
-  }, []);
+  }, [count]);
 
   return (
     <>
       <Header />
 
       <SlideBanner>
-        {movies && movies.map(item => (
+        {banner && banner.map(item => (
           <div
             key={item.id}
             className="h-[600px] w-screen flex flex-col gap-4 p-10 bg-cover bg-top relative"
@@ -70,35 +68,21 @@ export default function Home() {
       </section>
 
       <section className="py-5">
-        <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
-        <Slide>
-          {movies2 && movies2.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
+        <h1 className="font-bold text-white p-3">TOP SERIES</h1>
+        <div className="grid grid-cols-6 gap-4">
+          {movies && movies.map(item => (
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
           ))}
-        </Slide>
-      </section>
+        </div>
 
-      <section className="py-5">
-        <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
-        <Slide>
-          {movies3 && movies3.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
-          ))}
-        </Slide>
-      </section>
+      </section >
 
-      <section className="py-5">
-        <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
-        <Slide>
-          {movies4 && movies4.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
-          ))}
-        </Slide>
-      </section>
 
-      <div className="flex justify-center items-center p-4">
-        <Button className="bg-violet-800 text-white px-8 rounded-full flex gap-2 hover:bg-violet-900 transition duration-500">More <ChevronDown /></Button>
+      <div className="flex justify-center items-center p-4 gap-4">
+        <Button className={`bg-violet-800 text-white px-8 rounded-full flex gap-2 hover:bg-violet-900 transition duration-500 ${count > 1 ? '' : 'hidden'}`} onClick={prevCount}>Prev</Button>
+        <Button className="bg-violet-800 text-white px-8 rounded-full flex gap-2 hover:bg-violet-900 transition duration-500" onClick={nextCount}>Next</Button>
       </div>
+
 
       <Footer />
     </>
