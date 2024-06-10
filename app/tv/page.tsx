@@ -8,39 +8,35 @@ import { SlideBanner } from "../components/Slide/slideBaner";
 import { Slide } from "../components/Slide/slideCompornent";
 import { Card } from "../components/card/card";
 import { Button } from "../components/ui/button";
-import { ChevronDown, Heart, Play } from "lucide-react";
+import { Heart, Play } from "lucide-react";
 import { useHeaderContext } from "../context/headerContext";
 import { Footer } from "../components/footer/footer";
+import { useCount } from "../hooks/useCount";
 
 export default function Tv() {
   const { handleGetMovie } = useHeaderContext();
+  const { nextCount, prevCount, count } = useCount();
 
   const [series, setSeries] = useState<Result[]>([]);
-  const [series2, setSeries2] = useState<Result[]>([]);
-  const [series4, setSeries4] = useState<Result[]>([])
-  const [series3, setSeries3] = useState<Result[]>([]);
+  const [banner, setBanner] = useState<Result[]>([]);
 
   const getSeries = async () => {
     await API.Tv({ day: 'day', page: 1 })
+      .then(res => setBanner(res.results));
+    await API.Tv({ day: 'day', page: count })
       .then(res => setSeries(res.results));
-    await API.Tv({ day: 'day', page: 2 })
-      .then(res => setSeries2(res.results));
-    await API.Tv({ day: 'day', page: 3 })
-      .then(res => setSeries3(res.results));
-    await API.Tv({ day: 'day', page: 4 })
-      .then(res => setSeries4(res.results));
   };
 
   useEffect(() => {
     getSeries();
-  }, []);
+  }, [count]);
 
   return (
     <>
       <Header />
 
       <SlideBanner>
-        {series && series.map(item => (
+        {banner && banner.map(item => (
           <div
             key={item.id}
             className="h-[600px] w-screen flex flex-col gap-4 p-10 bg-cover bg-top relative"
@@ -48,8 +44,6 @@ export default function Tv() {
               backgroundImage: `url('https://image.tmdb.org/t/p/original/${item.backdrop_path}')`,
             }}
           >
-            {/* <div className="absolute z-10 inset-1 bg-black opacity-30 w-full h-full left-0 top-0"></div> */}
-
             <h1 className="text-5xl font-bold italic text-white">{item.name}</h1>
             <p className="text-white w-[500px]">{item.overview}</p>
             <div className="flex gap-4">
@@ -61,43 +55,18 @@ export default function Tv() {
       </SlideBanner>
 
       <section className="py-5">
-        <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
-        <Slide>
+        <h1 className="font-bold text-white p-3">TOP SERIES</h1>
+        <div className="grid grid-cols-6 gap-4">
           {series && series.map(item => (
-            <Card title={item.name} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
+            <Card title={item.name} id={item.id} poster_path={item.poster_path} />
           ))}
-        </Slide>
+        </div>
+
       </section>
 
-      <section className="py-5">
-        <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
-        <Slide>
-          {series2 && series2.map(item => (
-            <Card title={item.name} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
-          ))}
-        </Slide>
-      </section>
-
-      <section className="py-5">
-        <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
-        <Slide>
-          {series3 && series3.map(item => (
-            <Card title={item.name} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
-          ))}
-        </Slide>
-      </section>
-
-      <section className="py-5">
-        <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
-        <Slide>
-          {series4 && series4.map(item => (
-            <Card title={item.name} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
-          ))}
-        </Slide>
-      </section>
-
-      <div className="flex justify-center items-center p-4">
-        <Button className="bg-violet-800 text-white px-8 rounded-full flex gap-2 hover:bg-violet-900 transition duration-500">More <ChevronDown /></Button>
+      <div className="flex justify-center items-center p-4 gap-4">
+        <Button className={`bg-violet-800 text-white px-8 rounded-full flex gap-2 hover:bg-violet-900 transition duration-500 ${count > 1 ? '' : 'hidden'}`} onClick={prevCount}>Prev</Button>
+        <Button className="bg-violet-800 text-white px-8 rounded-full flex gap-2 hover:bg-violet-900 transition duration-500" onClick={nextCount}>Next</Button>
       </div>
 
       <Footer />
