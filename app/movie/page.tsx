@@ -19,13 +19,16 @@ export default function Home() {
 
   const [movies, setMovies] = useState<Result[]>([]);
   const [banner, setBanner] = useState<Result[]>([]);
+  const [slide, setSlide] = useState<Result[]>([]);
 
   const getMovies = async () => {
     Promise.all([
       await API.Movies({ page: count })
         .then(res => setMovies(res.results)),
       await API.Movies({ page: 2 })
-        .then(res => setBanner(res.results))
+        .then(res => setBanner(res.results)),
+      await API.Movies({ page: 5 })
+        .then(res => setSlide(res.results))
     ]);
   };
 
@@ -46,7 +49,6 @@ export default function Home() {
               backgroundImage: `url('https://image.tmdb.org/t/p/original/${item.backdrop_path}')`,
             }}
           >
-            {/* <div className="absolute z-10 inset-1 bg-black opacity-30 w-full h-full left-0 top-0"></div> */}
 
             <h1 className="text-5xl font-bold italic text-white">{item.title}</h1>
             <p className="text-white w-[500px] ">{item.overview}</p>
@@ -61,17 +63,17 @@ export default function Home() {
       <section className="py-5">
         <h1 className="font-bold text-white p-3">MOVIES YOU MUST WATCH</h1>
         <Slide>
-          {movies && movies.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} />
+          {slide && slide.map(item => (
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} onClick={() => handleGetMovie(item)} key={item.id} />
           ))}
         </Slide>
       </section>
 
       <section className="py-5">
         <h1 className="font-bold text-white p-3">TOP SERIES</h1>
-        <div className="grid grid-cols-6 gap-4">
+        <div className="grid grid-cols-6 max-2xl:grid-cols-5 max-xl:grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2 gap-4 place-items-center">
           {movies && movies.map(item => (
-            <Card title={item.title} id={item.id} poster_path={item.poster_path} />
+            <Card title={item.title} id={item.id} poster_path={item.poster_path} key={item.id} />
           ))}
         </div>
 

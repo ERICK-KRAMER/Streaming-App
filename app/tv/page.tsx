@@ -48,7 +48,7 @@ export default function Tv() {
             }}
           >
             <h1 className="text-5xl font-bold italic text-white">{item.name}</h1>
-            <p className="text-white w-[500px]">{item.overview}</p>
+            <p className="text-white w-[500px] max-sm:w-[400px]">{item.overview}</p>
             <div className="flex gap-4">
               <Button className="bg-violet-700 text-white py-2 px-4 rounded flex justify-center items-center gap-3">WATCH <Play /></Button>
               <Button className="bg-white text-black py-2 px-4 rounded flex justify-center items-center gap-3">MY LIST <Heart /></Button>
@@ -59,7 +59,7 @@ export default function Tv() {
 
       <section className="py-5">
         <h1 className="font-bold text-white p-3">TOP SERIES</h1>
-        <div className="grid grid-cols-6 gap-4">
+        <div className="grid grid-cols-6 max-2xl:grid-cols-5 max-xl:grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2 gap-4 place-items-center">
           {series && series.map(item => (
             <Card title={item.name} id={item.id} poster_path={item.poster_path} key={item.id} onClick={() => handleGetMovie(item)} />
           ))}

@@ -61,12 +61,12 @@ const Header = () => {
                     <TableCell>
                       <Image
                         src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
-                        alt={item.title}
+                        alt={('title' in item ? item.title : item.name)}
                         width={120}
                         height={10}
                       />
                     </TableCell>
-                    <TableCell className="text-black">{item.title}</TableCell>
+                    <TableCell className="text-black">{'title' in item ? item.title : item.name}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
