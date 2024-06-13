@@ -31,14 +31,13 @@ const useHeaderContext = () => {
 const HeaderContextProvider = ({ children }: { children: ReactNode }) => {
   const action = sessionStorage.getItem('action-button');
 
-  const [activeButton, setActiveButton] = useState<string>(String(action));
+  const [activeButton, setActiveButton] = useState<string>('');
 
   const [media, setMedia] = useState<Media | null>(null);
 
   const [getTitle, setGetTitle] = useState<Media[]>([]);
 
   const selectPage = (buttonName: string) => {
-    sessionStorage.setItem('action-button', buttonName);
     setActiveButton(buttonName);
   };
 
